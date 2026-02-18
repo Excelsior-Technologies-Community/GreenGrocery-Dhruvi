@@ -4,10 +4,56 @@ import { Link } from "react-router-dom";
 import "../Style.css";
 import logo from "../assets/logo.png";
 
+import herohome1 from "../assets/herohome.png";
+import herohome2 from "../assets/herohome1.png";
+import herohome3 from "../assets/herohome2.png";
+
 export default function Home() {
+
+    const slides = [
+        {
+            title: "Fresh Bakery Products",
+            price: "$14.25",
+            desc: "Premium quality bakery items freshly baked for you.",
+            image: herohome1
+        },
+        {
+            title: "Organic Fresh Produce",
+            price: "$10.99",
+            desc: "Healthy and organic vegetables & fruits.",
+            image: herohome2
+        },
+        {
+            title: "Hot Coffee Collection",
+            price: "$7.50",
+            desc: "Start your morning with premium coffee.",
+            image: herohome3
+        }
+    ];
+
+
+    const [current, setCurrent] = useState(0);
+
+    const nextSlide = () => {
+        setCurrent((prev) => (prev + 1) % slides.length);
+    };
+
+    const prevSlide = () => {
+        setCurrent((prev) =>
+            prev === 0 ? slides.length - 1 : prev - 1
+        );
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            nextSlide();
+        }, 4000);
+
+        return () => clearInterval(interval);
+    }, [current]);
+
     return (
         <>
-            {/* TOP BAR */}
             <div className="gg-topbar">
                 <div className="container d-flex justify-content-between">
                     <span>Welcome to our online store!</span>
@@ -22,11 +68,9 @@ export default function Home() {
                 </div>
             </div>
 
-            {/* MAIN HEADER */}
             <div className="gg-header">
                 <div className="container d-flex align-items-center justify-content-between">
 
-                    {/* Logo */}
                     <div className="gg-logo d-flex align-items-center">
                         <i className="fas fa-shopping-basket gg-logo-icon"></i>
                         <div>
@@ -34,7 +78,6 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Search */}
                     <div className="gg-search-box">
                         <input type="text" placeholder="Search for product..." />
                         <button>
@@ -64,7 +107,7 @@ export default function Home() {
 
                         <div className="dropdown me-4 position-static">
                             <button className="btn gg-category-btn dropdown-toggle" data-bs-toggle="dropdown">
-                                <i className="fas fa-bars me-2"></i> CATEGORIES
+                                CATEGORIES
                             </button>
 
                             <ul className="dropdown-menu gg-category-menu p-2">
@@ -167,6 +210,9 @@ export default function Home() {
                                 </li>
 
                                 <li><a className="dropdown-item" href="#"><i className="fas fa-fish me-2 text-primary"></i> Meat & Fish</a></li>
+
+                                <li><a className="dropdown-item" href="#"><i className="fa-solid fa-carrot text-success"></i>Orgnic Foods</a></li>
+
                             </ul>
                         </div>
 
@@ -304,11 +350,9 @@ export default function Home() {
                                             <li><a className="dropdown-item" href="#">Accordion</a></li>
                                             <li><a className="dropdown-item" href="#">Accordion 2</a></li>
                                             <li><a className="dropdown-item" href="#">Advanced Review & Q&A</a></li>
-                
+
                                         </ul>
                                     </li>
-
-
 
                                 </ul>
                             </li>
@@ -400,6 +444,83 @@ export default function Home() {
                     </div>
                 </div>
             </nav>
+
+
+            <div className="container-fluid mt-4">
+                <div className="row">
+
+                    <div className="col-lg-3 d-none d-lg-block">
+                        <div className="card p-3 sidebar">
+                            <h5 className="mb-3">Categories</h5>
+                            <ul className="list-unstyled category-list">
+                                <li><i className="fas fa-bread-slice me-2 text-warning"></i> Bakery</li>
+                                <li><i className="fas fa-wheat-awn me-2 text-success"></i> Bread</li>
+                                <li><i className="fas fa-candy-cane me-2 text-danger"></i> Candy</li>
+                                <li><i className="fas fa-mug-hot me-2 text-dark"></i> Coffee</li>
+                                <li><i className="fas fa-egg me-2 text-primary"></i> Dairy & Eggs</li>
+                                <li><i className="fas fa-apple-whole me-2 text-danger"></i> Fresh Produce</li>
+                                <li><i className="fas fa-ice-cream me-2 text-info"></i> Frozen</li>
+                                <li><i className="fas fa-fish me-2 text-primary"></i> Meat & Fish</li>
+                                <li><i className="fas fa-carrot me-2 text-success"></i> Organic Foods</li>
+                                <li><i className="fas fa-cookie-bite me-2 text-warning"></i> Snacks</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="col-lg-9">
+                        <div
+                            className="hero-section position-relative"
+                            style={{
+                                backgroundImage: `url(${slides[current].image})`
+                            }}
+                        >
+
+                            <div className="hero-content">
+                                <h2>{slides[current].title}</h2>
+                                <h3 className="text-primary">From {slides[current].price}</h3>
+                                <p>{slides[current].desc}</p>
+                                <button className="btn btn-primary">Products →</button>
+                            </div>
+
+                            {/* PREV BUTTON */}
+                            <button className="hero-btn prev" onClick={prevSlide}>
+                                <i className="fas fa-chevron-left"></i>
+                            </button>
+
+                            <button className="hero-btn next" onClick={nextSlide}>
+                                <i className="fas fa-chevron-right"></i>
+                            </button>
+
+                        </div>
+
+                        <div className="mt-5">
+                            <h4 className="mb-4">Shop by Categories</h4>
+
+                            <div className="category-row">
+
+                                {[
+                                    { icon: "fa-bread-slice", name: "Bakery" },
+                                    { icon: "fa-wheat-awn", name: "Bread" },
+                                    { icon: "fa-candy-cane", name: "Candy" },
+                                    { icon: "fa-mug-hot", name: "Coffee" },
+                                    { icon: "fa-egg", name: "Dairy & Eggs" },
+                                    { icon: "fa-apple-whole", name: "Fresh Produce" },
+                                    { icon: "fa-ice-cream", name: "Frozen" },
+                                    { icon: "fa-drumstick-bite", name: "Meat & Fish" },
+                                ].map((item, index) => (
+                                    <div className="category-box" key={index}>
+                                        <i className={`fas ${item.icon} fa-2x mb-3`}></i>
+                                        <h6>{item.name}</h6>
+                                    </div>
+                                ))}
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
