@@ -121,10 +121,10 @@ export default function Home() {
 
 
     const nextSlide = () => {
-  if (index < productsData.length - visibleCards) {
-    setIndex(index + 1);
-  }
-};
+        if (index < productsData.length - visibleCards) {
+            setIndex(index + 1);
+        }
+    };
 
 
     const prevSlide = () => {
@@ -197,14 +197,14 @@ export default function Home() {
                     <div className="gg-icons">
                         <div><i className="far fa-user"></i><span>Account</span></div>
                         <div
-                            className="kitchen-navbar-compare"
                             onClick={() => setIsCompareOpen(true)}
                         >
                             <i className="fas fa-sync"></i>
                             <span className="kitchen-compare-count">
                                 {compareItems.length}
                             </span>
-                        </div>                        <div><i className="far fa-heart"></i><span>Wishlist</span></div>
+                        </div>
+                        <div><i className="far fa-heart"></i><span>Wishlist</span></div>
                         <div><i className="fas fa-shopping-bag"></i><span>Cart</span></div>
                     </div>
                 </div>
@@ -757,7 +757,7 @@ export default function Home() {
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div className="kitchen-slider-container">
                             <div
                                 className="kitchen-slider-track"
