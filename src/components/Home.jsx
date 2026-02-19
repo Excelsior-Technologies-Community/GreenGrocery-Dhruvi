@@ -31,6 +31,7 @@ import p8 from "../assets/product8.jpeg";
 import p9 from "../assets/product9.jpeg";
 import p10 from "../assets/product10.jpeg";
 import p11 from "../assets/product10.jpeg";
+import p12 from "../assets/product11.jpeg";
 
 export default function Home() {
 
@@ -100,40 +101,154 @@ export default function Home() {
 
 
     const productsData = [
-        { id: 1, name: "Natural sliced almonds", price: 1.2, oldPrice: 1.4, img: p1 },
-        { id: 2, name: "White large kurdish garlic", price: 32, oldPrice: 3, img: p2 },
-        { id: 3, name: "Fresh red bell pepper", price: 3.25, oldPrice: 4, img: p3 },
-        { id: 4, name: "Superfine nut flour", price: 2.34, oldPrice: 3.25, img: p4 },
-        { id: 5, name: "Bertolli Frozen Meals", price: 7, oldPrice: 8, img: p5 },
-        { id: 6, name: "Organic broccoli", price: 3.25, oldPrice: 4, img: p6 },
-        { id: 7, name: "Fresh tomato", price: 2.2, oldPrice: 3, img: p7 },
-        { id: 8, name: "Green chili", price: 1.5, oldPrice: 2, img: p8 },
-        { id: 9, name: "Olive oil", price: 10, oldPrice: 14, img: p9 },
-        { id: 10, name: "Pasta", price: 4, oldPrice: 6, img: p10 },
-        { id: 11, name: "Milk", price: 5, oldPrice: 7, img: p11 }
+        {
+            id: 1,
+            name: "Natural sliced almonds",
+            price: 1.2,
+            oldPrice: 1.4,
+            img: p1,
+            rating: 4,
+            badge: "SALE",
+            discount: "19%"
+        },
+        {
+            id: 2,
+            name: "Organic broccoli",
+            price: 3.25,
+            oldPrice: 4,
+            img: p2,
+            rating: 5,
+            badge: "ORGANIC"
+        },
+        {
+            id: 3,
+            name: "Fresh tomato",
+            price: 2.2,
+            oldPrice: 3,
+            img: p3,
+            rating: 3,
+            badge: "NEW"
+        },
+        {
+            id: 4,
+            name: "Organic farming asparagus",
+            price: 2.2,
+            oldPrice: 3,
+            img: p4,
+            rating: 3,
+            badge: "SALE"
+        },
+        {
+            id: 5,
+            name: "Natural sliced featured almonds",
+            price: 2.2,
+            oldPrice: 3,
+            img: p5,
+            rating: 3,
+            badge: "NEW"
+        },
+        {
+            id: 6,
+            name: "White Large  kurdish garlic",
+            price: 2.2,
+            oldPrice: 3,
+            img: p6,
+            rating: 3,
+            badge: "NEW"
+        },
+        {
+            id: 7,
+            name: "Fresh red bell pepper,1 Each",
+            price: 2.2,
+            oldPrice: 3,
+            img: p7,
+            rating: 3,
+            badge: "NEW"
+        },
+        {
+            id: 8,
+            name: "SuperFine balanced nut flour",
+            price: 2.2,
+            oldPrice: 3,
+            img: p8,
+            rating: 3,
+            badge: "NEW"
+        },
+        {
+            id: 9,
+            name: "Bertolli Frozen Skillet Meals",
+            price: 2.2,
+            oldPrice: 3,
+            img: p9,
+            rating: 3,
+            badge: "SALE"
+        },
+        {
+            id: 10,
+            name: "Organic yellow banana chips",
+            price: 2.2,
+            oldPrice: 3,
+            img: p10,
+            rating: 3,
+            badge: "NEW"
+        },
+        {
+            id: 11,
+            name: "Fisher Chef's Naturals Pecans",
+            price: 2.2,
+            oldPrice: 3,
+            img: p12,
+            rating: 3,
+            badge: "NEW"
+        },
+        {
+            id: 12,
+            name: "Fresh tomato",
+            price: 2.2,
+            oldPrice: 3,
+            img: p11,
+            rating: 3,
+            badge: "SALE"
+        }
     ];
+
 
     const [index, setIndex] = useState(0);
     const [compareItems, setCompareItems] = useState([]);
     const [isCompareOpen, setIsCompareOpen] = useState(false);
 
-    const visibleCards = Math.floor(window.innerWidth / 265);
+    const [visibleCards, setVisibleCards] = useState(4);
+
+    useEffect(() => {
+        const updateCards = () => {
+            if (window.innerWidth >= 1400) setVisibleCards(5);
+            else if (window.innerWidth >= 1200) setVisibleCards(4);
+            else if (window.innerWidth >= 992) setVisibleCards(3);
+            else if (window.innerWidth >= 768) setVisibleCards(2);
+            else setVisibleCards(1);
+        };
+
+        updateCards();
+        window.addEventListener("resize", updateCards);
+
+        return () => window.removeEventListener("resize", updateCards);
+    }, []);
 
 
     const nextSlide = () => {
         if (index < productsData.length - visibleCards) {
-            setIndex(index + 1);
+            setIndex(prev => prev + 1);
         }
     };
-
 
     const prevSlide = () => {
         if (index > 0) {
-            setIndex(index - 1);
+            setIndex(prev => prev - 1);
         }
     };
 
-    // Add to Compare
+
+
     const addToCompare = (product) => {
         if (!compareItems.find((item) => item.id === product.id)) {
             setCompareItems([...compareItems, product]);
@@ -145,7 +260,6 @@ export default function Home() {
         setCompareItems(compareItems.filter((item) => item.id !== id));
     };
 
-    // Close on ESC + disable scroll
     useEffect(() => {
         const handleEsc = (e) => {
             if (e.key === "Escape") setIsCompareOpen(false);
@@ -161,6 +275,16 @@ export default function Home() {
             window.removeEventListener("keydown", handleEsc);
         };
     }, [isCompareOpen]);
+
+    useEffect(() => {
+        const handleResizeClose = () => {
+            setIsCompareOpen(false);
+        };
+
+        window.addEventListener("resize", handleResizeClose);
+        return () => window.removeEventListener("resize", handleResizeClose);
+    }, []);
+
     return (
         <>
             <div className="gg-topbar">
@@ -761,70 +885,97 @@ export default function Home() {
                         <div className="kitchen-slider-container">
                             <div
                                 className="kitchen-slider-track"
-                                style={{ transform: `translateX(-${index * 250}%)` }}
+                                style={{
+                                    transform: `translateX(-${index * (100 / visibleCards)}%)`
+                                }}
                             >
                                 {productsData.map((item) => (
-                                    <div className="kitchen-product-card" key={item.id}>
-                                        <div className="kitchen-product-img-wrapper">
-                                            <img src={item.img} alt="" />
+                                    <div
+                                        className="kitchen-product-card"
+                                        key={item.id}
+                                        style={{ flex: `0 0 ${100 / visibleCards}%` }}
+                                    >
+                                        <div className="product-card-inner">
 
-                                            <div className="kitchen-hover-icons">
-                                                <i className="fas fa-heart"></i>
-                                                <i
-                                                    className="fas fa-sync"
-                                                    onClick={() => addToCompare(item)}
-                                                ></i>
-                                                <i className="fas fa-eye"></i>
+                                            <div className="kitchen-product-img-wrapper">
+                                                <img src={item.img} alt={item.name} />
+
+                                                <div className="product-hover-icons">
+                                                    <button><i className="fas fa-shopping-bag"></i></button>
+                                                    <button onClick={() => addToCompare(item)}>
+                                                        <i className="fas fa-sync"></i>
+                                                    </button>
+                                                    <button><i className="fas fa-eye"></i></button>
+                                                    <button><i className="far fa-heart"></i></button>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <p className="kitchen-product-title">{item.name}</p>
+                                            <div className="product-content">
 
-                                        <div className="kitchen-price">
-                                            <span className="old-price">${item.oldPrice}</span>
-                                            <span className="new-price">${item.price}</span>
+                                                <div className="rating">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <i
+                                                            key={i}
+                                                            className={`fa-star ${i < item.rating ? "fas active-star" : "far"
+                                                                }`}
+                                                        ></i>
+                                                    ))}
+                                                </div>
+
+                                                <h6>{item.name}</h6>
+
+                                                <div className="kitchen-price">
+                                                    <span className="old-price">${item.oldPrice}</span>
+                                                    <span className="new-price">${item.price}</span>
+                                                </div>
+
+                                                <div className="product-bottom-badges">
+                                                    {item.badge && (
+                                                        <span className={`badge-${item.badge.toLowerCase()}`}>
+                                                            {item.badge}
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <div
-                            className={`kitchen-compare-overlay ${isCompareOpen ? "active" : ""}`}
-                            onClick={() => setIsCompareOpen(false)}
-                        ></div>
-
-                        <div className={`kitchen-compare-sidebar ${isCompareOpen ? "open" : ""}`}>
-                            <div className="d-flex justify-content-between mb-4">
+                        <div className={`compare-sidebar ${isCompareOpen ? "open" : ""}`}>
+                            <div className="compare-header">
                                 <h5>Your Compared Products</h5>
-                                <i
-                                    className="fas fa-times"
-                                    onClick={() => setIsCompareOpen(false)}
-                                ></i>
+                                <i className="fas fa-times" onClick={() => setIsCompareOpen(false)}></i>
                             </div>
 
                             {compareItems.length === 0 && (
-                                <p className="text-muted">No products added.</p>
+                                <p className="empty-compare">No products added.</p>
                             )}
 
                             {compareItems.map((item) => (
-                                <div className="kitchen-compare-item" key={item.id}>
-                                    <img src={item.img} alt="" />
+                                <div className="compare-item" key={item.id}>
+                                    <img src={item.img} alt={item.name} />
                                     <div>
                                         <p>{item.name}</p>
                                         <span>${item.price}</span>
                                     </div>
                                     <i
-                                        className="fas fa-trash ms-auto"
+                                        className="fas fa-trash"
                                         onClick={() => removeFromCompare(item.id)}
                                     ></i>
                                 </div>
                             ))}
                         </div>
+
+                        <div
+                            className={`compare-overlay ${isCompareOpen ? "active" : ""}`}
+                            onClick={() => setIsCompareOpen(false)}
+                        ></div>
+
                     </div>
-
-
-
 
                 </div>
             </div >
