@@ -33,6 +33,7 @@ import p10 from "../assets/product10.jpeg";
 import p11 from "../assets/product10.jpeg";
 import p12 from "../assets/product11.jpeg";
 
+import banner4 from "../assets/banner4.png"
 export default function Home() {
 
     const slides = [
@@ -212,7 +213,6 @@ export default function Home() {
         }
     ];
 
-
     const [index, setIndex] = useState(0);
     const [compareItems, setCompareItems] = useState([]);
     const [isCompareOpen, setIsCompareOpen] = useState(false);
@@ -298,8 +298,6 @@ export default function Home() {
             setVfCurrentIndex(prev => prev - 1);
         }
     };
-
-
 
 
 
@@ -900,6 +898,47 @@ export default function Home() {
                                 </div>
                             </div>
 
+                        </div>
+
+                        <div className="fruit-container py-5">
+                            <div className="container custom-wrapper">
+
+                                <section className="hero-fruit-section position-relative mb-4">
+                                    <div className="hero-content-overlay p-4">
+                                        <p className="text-muted mb-1">Uncategorized</p>
+                                        <h1 className="fw-bold">Fresh Fruits!</h1>
+                                        <button className="btn btn-dark btn-order mt-auto">Order Now!</button>
+                                    </div>
+                                </section>
+
+                                <section className="testimonial-section mb-4">
+                                    <h2 className="testimonial-title mb-3">Testimonials</h2>
+                                    <div className="testimonial-card text-center p-5">
+                                        <p className="testimonial-text mb-4">
+                                            This is due to their excellent service, competitive pricing and customer support.
+                                            It's thoroughly refreshing to get such a personal touch.
+                                        </p>
+                                        <h4 className="fw-bold mb-0">Bradley Kim</h4>
+                                        <small className="text-uppercase tracking-wider">Customer</small>
+                                    </div>
+                                </section>
+
+                                <section className="features-stack d-flex flex-column gap-2">
+                                    <div className="feature-item item-shipping d-flex align-items-center p-3">
+                                        <span className="feature-icon me-3"><i className="fa-solid fa-truck"></i></span>
+                                        <span className="feature-label">World Class Free Shipping</span>
+                                    </div>
+                                    <div className="feature-item item-secured d-flex align-items-center p-3">
+                                        <span className="feature-icon me-3"><i className="fa-solid fa-shield"></i></span>
+                                        <span className="feature-label">Secured Shopping</span>
+                                    </div>
+                                    <div className="feature-item item-cards d-flex align-items-center p-3">
+                                        <span className="feature-icon me-3"><i className="fa-solid fa-credit-card"></i></span>
+                                        <span className="feature-label">Credit Cards</span>
+                                    </div>
+                                </section>
+
+                            </div>
                         </div>
 
 

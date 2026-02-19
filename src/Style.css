@@ -759,3 +759,68 @@ TOPBAR .gg-topbar {
         max-width: 100%;
     }
 }
+.custom-wrapper {
+    max-width: 500px; 
+    margin: 0 auto;
+}
+
+.hero-fruit-section {
+    height: 400px;
+    background-image: url('../src/assets/banner4.png');
+    background-size: cover;
+    background-position: bottom;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f3f0ee;
+}
+
+.hero-content-overlay {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.btn-order {
+    border-radius: 20px;
+    padding: 10px 25px;
+    font-weight: 600;
+}
+
+.testimonial-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.testimonial-card {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.testimonial-text {
+    font-size: 1.1rem;
+    color: #4a4a4a;
+    line-height: 1.6;
+}
+
+.feature-item {
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.feature-item:hover {
+    transform: scale(1.01);
+}
+
+.item-shipping { background-color: #e0dbff; color: #7b6ae0; }
+.item-secured { background-color: #c7f2e0; color: #57a686; }
+.item-cards { background-color: #fffeb3; color: #9c9a40; border: 1px solid #f2f0a1; }
+
+@media (max-width: 576px) {
+    .hero-fruit-section { height: 300px; }
+    .testimonial-card { padding: 2rem !important; }
+    .feature-label { font-size: 0.95rem; }
+}
