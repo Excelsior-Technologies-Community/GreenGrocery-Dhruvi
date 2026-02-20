@@ -33,7 +33,18 @@ import p10 from "../assets/product10.jpeg";
 import p11 from "../assets/product10.jpeg";
 import p12 from "../assets/product11.jpeg";
 
-import banner4 from "../assets/banner4.png"
+import bg1 from "../assets/banner1.png";
+import bg2 from "../assets/banner2.png";
+import bg3 from "../assets/banner3.png";
+
+import brandLogo from "../assets/brand-logo.webp";
+
+import store1 from "../assets/store1.jpeg";
+import store2 from "../assets/store2.jpeg";
+import store3 from "../assets/store3.jpeg";
+import store4 from "../assets/store4.jpg";
+import store5 from "../assets/store5.jpeg";
+import store6 from "../assets/store5.jpeg";
 
 const featuredProducts = [
     { id: 1, name: "Organic green fresh broccoli", price: "$3.25", old: "$4.00", img: p1 },
@@ -313,59 +324,119 @@ export default function Home() {
         }
     };
 
-        const featuredRef = useRef(null);
-        const saleRef = useRef(null);
-        const bestRef = useRef(null);
+    const products = [
+        {
+            id: 1,
+            tag: "NINETHEME",
+            img: store1,
+            date: "DECEMBER 4, 2021",
+            title: "Have you seen the supermarket April sales?"
+        },
+        {
+            id: 2,
+            tag: "EGGS",
+            img: store2,
+            date: "DECEMBER 15, 2021",
+            title: "Paprika peppers have arrived from Texas!"
+        },
+        {
+            id: 3,
+            tag: "NINETHEME",
+            img: store3,
+            date: "SEPTEMBER 9, 2021",
+            title: "Back to childhood : candies are waiting for you!"
+        },
+        {
+            id: 4,
+            tag: "EGGS",
+            img: store4,
+            date: "DECEMBER 8, 2021",
+            title: "September Trends: Red Vegetables"
+        },
+        {
+            id: 5,
+            tag: "NINETHEME",
+            img: store5,
+            date: "JANUARY 5, 2022",
+            title: "Fresh organic foods this winter"
+        },
+        {
+            id: 6,
+            tag: "EGGS",
+            img: store6,
+            date: "FEBRUARY 12, 2022",
+            title: "Healthy habits for daily life"
+        }
+    ];
 
-        const scrollBlock = (ref, direction) => {
-    const scrollAmount = 125;
+    const [index0, setIndex0] = useState(0);
+    const visibleCards0 = 4;
 
-    if (direction === "next") {
-        ref.current.scrollTop += scrollAmount;
-    } else {
-        ref.current.scrollTop -= scrollAmount;
-    }
-};
+    const nextSlide0 = () => {
+        if (index0 < products.length - visibleCards0) {
+            setIndex0(index0 + 1);
+        }
+    };
 
-        const ProductBlock = ({ title, products, blockRef, uniqueName }) => (
-            <div className="hps-block-wrapper">
-                <div className="hps-block-header">
-                    <h5>{title}</h5>
-                    <div>
-                        <button
-                            className={`hps-btn-prev-${uniqueName}`}
-                            onClick={() => scrollBlock(blockRef, "prev")}
-                        >
-                            &#10094;
-                        </button>
-                        <button
-                            className={`hps-btn-next-${uniqueName}`}
-                            onClick={() => scrollBlock(blockRef, "next")}
-                        >
-                            &#10095;
-                        </button>
-                    </div>
-                </div>
+    const prevSlide0 = () => {
+        if (index0 > 0) {
+            setIndex0(index0 - 1);
+        }
+    };
 
-                <div className="hps-product-scroll" ref={blockRef}>
-                    {products.map((item) => (
-                        <div className="hps-product-card" key={item.id}>
-                            <div className="hps-product-image">
-                                <img src={item.img} alt={item.name} />
-                            </div>
-                            <div className="hps-product-info">
-                                <p className="hps-stock-text">IN STOCK</p>
-                                <h6>{item.name}</h6>
-                                <div className="hps-price">
-                                    <span className="hps-old-price">{item.old}</span>
-                                    <span className="hps-new-price">{item.price}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+    const featuredRef = useRef(null);
+    const saleRef = useRef(null);
+    const bestRef = useRef(null);
+
+    const scrollBlock = (ref, direction) => {
+        const scrollAmount = 125;
+
+        if (direction === "next") {
+            ref.current.scrollTop += scrollAmount;
+        } else {
+            ref.current.scrollTop -= scrollAmount;
+        }
+    };
+
+    const ProductBlock = ({ title, products, blockRef, uniqueName }) => (
+        <div className="hps-block-wrapper">
+            <div className="hps-block-header">
+                <h5>{title}</h5>
+                <div>
+                    <button
+                        className={`hps-btn-prev-${uniqueName}`}
+                        onClick={() => scrollBlock(blockRef, "prev")}
+                    >
+                        &#10094;
+                    </button>
+                    <button
+                        className={`hps-btn-next-${uniqueName}`}
+                        onClick={() => scrollBlock(blockRef, "next")}
+                    >
+                        &#10095;
+                    </button>
                 </div>
             </div>
-        );
+
+            <div className="hps-product-scroll" ref={blockRef}>
+                {products.map((item) => (
+                    <div className="hps-product-card" key={item.id}>
+                        <div className="hps-product-image">
+                            <img src={item.img} alt={item.name} />
+                        </div>
+                        <div className="hps-product-info">
+                            <p className="hps-stock-text">IN STOCK</p>
+                            <h6>{item.name}</h6>
+                            <div className="hps-price">
+                                <span className="hps-old-price">{item.old}</span>
+                                <span className="hps-new-price">{item.price}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 
     return (
         <>
@@ -1213,15 +1284,114 @@ export default function Home() {
 
                         </div>
 
+                        <div className="pbs-main-wrapper container my-5">
+
+                            <div className="row g-4">
+
+                                <div className="col-lg-4 col-md-6">
+                                    <div
+                                        className="pbs-promo-card"
+                                        style={{ backgroundImage: `url(${bg1})` }}
+                                    >
+                                        <div className="pbs-card-content">
+                                            <h4>Daily Milk & Eggs</h4>
+                                            <button className="pbs-order-btn">Order Now!</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-lg-4 col-md-6">
+                                    <div
+                                        className="pbs-promo-card"
+                                        style={{ backgroundImage: `url(${bg2})` }}
+                                    >
+                                        <div className="pbs-card-content">
+                                            <h4>Colorful Creams!</h4>
+                                            <button className="pbs-order-btn">Order Now!</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-lg-4 col-md-12">
+                                    <div
+                                        className="pbs-promo-card"
+                                        style={{ backgroundImage: `url(${bg3})` }}
+                                    >
+                                        <div className="pbs-card-content text-start">
+                                            <p className="pbs-small-text">0 Products</p>
+                                            <p className="pbs-small-text">Uncategorized</p>
+                                            <h4>Hot cookies are ready!</h4>
+                                            <button className="pbs-order-btn">Order Now!</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="pbs-brand-section mt-5">
+                                <h4 className="mb-4">Shop By Brands</h4>
+
+                                <div className="row text-center g-4">
+
+                                    {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                                        <div key={item} className="col-lg-1 col-md-3 col-4">
+                                            <div className="pbs-brand-item">
+                                                <img src={brandLogo} alt={`Brand ${item}`} />
+                                                <p>BRAND #{item}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                </div>
+                            </div>
+
+                        </div>
 
 
+                        <section className="sns-wrapper container">
+                            <div className="sns-header">
+                                <h2>Latest News From The Store</h2>
 
+                                <div className="sns-controls">
+                                    <button onClick={prevSlide0} disabled={index0 === 0}>‹</button>
+                                    <button
+                                        onClick={nextSlide0}
+                                        disabled={index0 >= products.length - visibleCards0}
+                                    >
+                                        ›
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="sns-slider">
+                                <div
+                                    className="sns-track"
+                                    style={{
+                                        transform: `translateX(-${index0 * (100 / visibleCards0)}%)`
+                                    }}
+                                >
+                                    {products.map((item) => (
+                                        <div className="sns-card" key={item.id}>
+                                            <div className="sns-img-wrap">
+                                                <img src={item.img} alt={item.title} />
+                                                <span className="sns-tag">{item.tag}</span>
+                                            </div>
+
+                                            <div className="sns-content">
+                                                <p className="sns-date">
+                                                    XNT_ADM &nbsp; {item.date}
+                                                </p>
+                                                <h5>{item.title}</h5>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
 
 
 
                     </div>
-
-
 
                 </div>
             </div>
