@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "../Style.css";
 import logo from "../assets/logo.png";
@@ -276,8 +277,6 @@ export default function Home() {
         }
     };
 
-
-
     const addToCompare = (product) => {
         if (!compareItems.find((item) => item.id === product.id)) {
             setCompareItems([...compareItems, product]);
@@ -402,6 +401,120 @@ export default function Home() {
         }
     };
 
+    const productsData1 = [
+        {
+            id: 1,
+            name: "Organic green fresh broccoli",
+            price: 3.25,
+            oldPrice: 4.0,
+            img: p1,
+            badge: "SALE",
+        },
+        {
+            id: 2,
+            name: "Southern pit special barbecue",
+            price: 40.0,
+            oldPrice: 45.0,
+            img: p2,
+            badge: "NEW",
+        },
+        {
+            id: 3,
+            name: "New crop yellow green lettuce",
+            price: 2.84,
+            oldPrice: 3.22,
+            img: p3,
+            badge: "SALE",
+        },
+        {
+            id: 4,
+            name: "Specially licensed light pineapple",
+            price: 5.45,
+            oldPrice: 6.25,
+            img: p4,
+            badge: "SALE",
+        },
+    ];
+
+    const [kgCartItems, setKgCartItems] = useState(() => {
+        const savedCart = localStorage.getItem("kgCart");
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
+
+    const [kgIsCartOpen, setKgIsCartOpen] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        localStorage.setItem("kgCart", JSON.stringify(kgCartItems));
+    }, [kgCartItems]);
+
+    const kgAddToCart = (product) => {
+        setKgIsCartOpen(true);
+
+        setKgCartItems((prev) => {
+            const exist = prev.find((item) => item.id === product.id);
+
+            if (exist) {
+                return prev.map((item) =>
+                    item.id === product.id
+                        ? { ...item, qty: item.qty + 1 }
+                        : item
+                );
+            } else {
+                return [...prev, { ...product, qty: 1 }];
+            }
+        });
+    };
+
+    const kgIncreaseQty = (id) => {
+        setKgCartItems((prev) =>
+            prev.map((item) =>
+                item.id === id ? { ...item, qty: item.qty + 1 } : item
+            )
+        );
+    };
+
+    const kgDecreaseQty = (id) => {
+        setKgCartItems((prev) =>
+            prev.map((item) =>
+                item.id === id && item.qty > 1
+                    ? { ...item, qty: item.qty - 1 }
+                    : item
+            )
+        );
+    };
+
+    const kgRemoveItem = (id) => {
+        setKgCartItems((prev) =>
+            prev.filter((item) => item.id !== id)
+        );
+    };
+
+    const kgSubtotal = kgCartItems.reduce(
+        (total, item) => total + item.price * item.qty,
+        0
+    );
+
+    const [ggwWishlistItems, setGgwWishlistItems] = useState([]);
+    const [ggwIsWishlistOpen, setGgwIsWishlistOpen] = useState(false);
+
+
+    const ggwAddToWishlist = (product) => {
+        const exists = ggwWishlistItems.find((item) => item.id === product.id);
+        if (!exists) {
+            setGgwWishlistItems([...ggwWishlistItems, product]);
+        }
+        setGgwIsWishlistOpen(true);
+    };
+
+    const ggwRemoveFromWishlist = (id) => {
+        setGgwWishlistItems(
+            ggwWishlistItems.filter((item) => item.id !== id)
+        );
+    };
+
+    const [ggwIsAccountOpen, setGgwIsAccountOpen] = useState(false);
+
     const ProductBlock = ({ title, products, blockRef, uniqueName }) => (
         <div className="hps-block-wrapper">
             <div className="hps-block-header">
@@ -476,7 +589,13 @@ export default function Home() {
                     </div>
 
                     <div className="gg-icons">
-                        <div><i className="far fa-user"></i><span>Account</span></div>
+                        <div
+                            className="ggw-account-btn"
+                            onClick={() => setGgwIsAccountOpen(true)}
+                        >
+                            <i className="far fa-user"></i>
+                            <span>Account</span>
+                        </div>
                         <div
                             onClick={() => setIsCompareOpen(true)}
                         >
@@ -485,8 +604,24 @@ export default function Home() {
                                 {compareItems.length}
                             </span>
                         </div>
-                        <div><i className="far fa-heart"></i><span>Wishlist</span></div>
-                        <div><i className="fas fa-shopping-bag"></i><span>Cart</span></div>
+
+                        <div onClick={() => setGgwIsWishlistOpen(true)} className="ggw-header-wishlist">
+                            <i className="far fa-heart"></i>
+                            <span className="ggw-wishlist-count">
+                                {ggwWishlistItems.length}
+                            </span>
+                            <span>Wishlist</span>
+                        </div>
+                        <div
+                            className="kg-header-cart-icon"
+                            onClick={() => setKgIsCartOpen(true)}
+                        >
+                            <i className="fas fa-shopping-bag"></i>
+                            <span className="kg-cart-count">
+                                {kgCartItems.length}
+                            </span>
+                            <span>Cart</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1015,12 +1150,18 @@ export default function Home() {
                                                 <img src={item.img} alt={item.name} />
 
                                                 <div className="vf-hover-icons">
-                                                    <button><i className="fas fa-shopping-bag"></i></button>
                                                     <button><i className="fas fa-eye"></i></button>
-                                                    <button><i className="far fa-heart"></i></button>
+                                                    <button onClick={() => kgAddToCart(item)}>
+                                                        <i className="fas fa-shopping-bag"></i>
+                                                    </button>
                                                     <button onClick={() => addToCompare(item)}>
                                                         <i className="fas fa-sync"></i>
                                                     </button>
+
+                                                    <button onClick={() => ggwAddToWishlist(item)}>
+                                                        <i className="far fa-heart"></i>
+                                                    </button>
+
                                                 </div>
                                             </div>
 
@@ -1161,12 +1302,16 @@ export default function Home() {
                                                 <img src={item.img} alt={item.name} />
 
                                                 <div className="product-hover-icons">
-                                                    <button><i className="fas fa-shopping-bag"></i></button>
+                                                    <button onClick={() => kgAddToCart(item)}>
+                                                        <i className="fas fa-shopping-bag"></i>
+                                                    </button>
                                                     <button onClick={() => addToCompare(item)}>
                                                         <i className="fas fa-sync"></i>
                                                     </button>
                                                     <button><i className="fas fa-eye"></i></button>
-                                                    <button><i className="far fa-heart"></i></button>
+                                                    <button onClick={() => ggwAddToWishlist(item)}>
+                                                        <i className="far fa-heart"></i>
+                                                    </button>
                                                 </div>
                                             </div>
 
@@ -1398,137 +1543,401 @@ export default function Home() {
                 </div>
             </div>
 
-            
+            <section className="fp-main-section container-fluid">
+                <div className="container">
+                    <div className="row">
+
+                        <div className="col-lg-4 fp-left-content">
+                            <span className="fp-badge">FEATURED</span>
+                            <h2>Bestsellers Of The Week</h2>
+                            <p>
+                                Made from premium non-stretch Japanese denim for a vintage-inspired look,
+                                the ’90s Cheeky Jean has an easy straight leg, an extra-high rise,
+                                and a butt-boosting rear fit.
+                            </p>
+                            <button className="fp-btn">
+                                Check Other Products <i className="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+
+                        <div className="col-lg-8">
+                            <h5 className="mb-4">Products</h5>
+
+                            <div className="row g-4">
+                                <div className="kitchen-slider-container">
+                                    <div
+                                        className="kitchen-slider-track"
+                                        style={{
+                                            transform: `translateX(-${index * (100 / visibleCards)}%)`
+                                        }}
+                                    >
+                                        {productsData.map((item) => (
+                                            <div
+                                                className="kitchen-product-card"
+                                                key={item.id}
+                                                style={{ flex: `0 0 ${100 / visibleCards}%` }}
+                                            >
+                                                <div className="product-card-inner">
+
+                                                    <div className="kitchen-product-img-wrapper">
+                                                        <img src={item.img} alt={item.name} />
+
+                                                        <div className="product-hover-icons">
+                                                            <button onClick={() => kgAddToCart(item)}>
+                                                                <i className="fas fa-shopping-bag"></i>
+                                                            </button>
+                                                            <button onClick={() => addToCompare(item)}>
+                                                                <i className="fas fa-sync"></i>
+                                                            </button>
+                                                            <button><i className="fas fa-eye"></i></button>
+
+                                                            <button onClick={() => ggwAddToWishlist(item)}>
+                                                                <i className="far fa-heart"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="product-content">
+
+                                                        <div className="rating">
+                                                            {[...Array(5)].map((_, i) => (
+                                                                <i
+                                                                    key={i}
+                                                                    className={`fa-star ${i < item.rating ? "fas active-star" : "far"
+                                                                        }`}
+                                                                ></i>
+                                                            ))}
+                                                        </div>
+
+                                                        <h6>{item.name}</h6>
+
+                                                        <div className="kitchen-price">
+                                                            <span className="old-price">${item.oldPrice}</span>
+                                                            <span className="new-price">${item.price}</span>
+                                                        </div>
+
+                                                        <div className="product-bottom-badges">
+                                                            {item.badge && (
+                                                                <span className={`badge-${item.badge.toLowerCase()}`}>
+                                                                    {item.badge}
+                                                                </span>
+                                                            )}
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
 
 
-      <section className="gf-register-section">
-        <div className="container gf-register-wrapper">
-          <div className="row align-items-center">
-            
-            <div className="col-lg-6">
-              <h4 className="gf-register-title">
-                Get a surprise discount by registering!
-              </h4>
+                            </div>
+                        </div>
 
-              <div className="gf-register-form d-flex">
-                <input
-                  type="email"
-                  placeholder="Your E-mail"
-                  className="form-control gf-input"
-                />
-                <button className="gf-submit-btn">Submit</button>
-              </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <div className={`kg-cart-overlay ${kgIsCartOpen ? "active" : ""}`}
+                onClick={() => setKgIsCartOpen(false)}></div>
+
+            <div className={`kg-cart-sidebar ${kgIsCartOpen ? "open" : ""}`}>
+
+                <div className="kg-cart-header">
+                    <button onClick={() => setKgIsCartOpen(false)}>✕</button>
+                    <h5>Your Cart</h5>
+                </div>
+
+                <div className="kg-cart-body">
+
+                    {kgCartItems.length === 0 && (
+                        <p className="text-center">Your cart is empty</p>
+                    )}
+
+                    {kgCartItems.map((item) => (
+                        <div key={item.id} className="kg-cart-item">
+
+                            <img src={item.img} alt={item.name} />
+
+                            <div className="kg-cart-details">
+                                <h6>{item.name}</h6>
+                                <p>${item.price} x {item.qty}</p>
+
+                                <div className="kg-qty-control">
+                                    <button onClick={() => kgDecreaseQty(item.id)}>-</button>
+                                    <span>{item.qty}</span>
+                                    <button onClick={() => kgIncreaseQty(item.id)}>+</button>
+                                </div>
+                            </div>
+
+                            <i
+                                className="fas fa-trash kg-remove-icon"
+                                onClick={() => kgRemoveItem(item.id)}
+                            ></i>
+
+                        </div>
+                    ))}
+
+                </div>
+
+                {ggwIsWishlistOpen && (
+                    <div
+                        className="ggw-wishlist-overlay"
+                        onClick={() => setGgwIsWishlistOpen(false)}
+                    ></div>
+                )}
+
+                <div className={`ggw-wishlist-sidebar ${ggwIsWishlistOpen ? "ggw-active" : ""}`}>
+                    <div className="ggw-wishlist-header d-flex justify-content-between align-items-center">
+                        <h5>Your Wishlist</h5>
+                        <i
+                            className="fas fa-times ggw-close-icon"
+                            onClick={() => setGgwIsWishlistOpen(false)}
+                        ></i>
+                    </div>
+
+                    <div className="ggw-wishlist-body">
+                        {ggwWishlistItems.length === 0 ? (
+                            <p className="text-muted">No products in wishlist.</p>
+                        ) : (
+                            ggwWishlistItems.map((item) => (
+                                <div key={item.id} className="ggw-wishlist-item d-flex">
+                                    <img src={item.img} alt="" />
+
+                                    <div className="ggw-wishlist-info">
+                                        <span className="ggw-stock">{item.stock}</span>
+                                        <h6>{item.name}</h6>
+                                        <p className="ggw-price">
+                                            <del>${item.oldPrice}</del> ${item.price}
+                                        </p>
+                                    </div>
+
+                                    <i
+                                        className="fas fa-trash ggw-remove-icon"
+                                        onClick={() => ggwRemoveFromWishlist(item.id)}
+                                    ></i>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+
+                <div className="kg-cart-footer">
+                    <div className="kg-subtotal">
+                        <span>SUBTOTAL:</span>
+                        <strong>${kgSubtotal.toFixed(2)}</strong>
+                    </div>
+
+                    <p className="kg-shipping-text">
+                        Free shipping on all orders over $450
+                    </p>
+
+                    <div className="kg-cart-buttons">
+                        <button
+                            className="kg-view-cart-btn"
+                            onClick={() => {
+                                setKgIsCartOpen(false);
+                                navigate("/cart");
+                            }}
+                        >
+                            View Cart
+                        </button>
+                        <button className="kg-checkout-btn">Checkout</button>
+                    </div>
+                </div>
+
             </div>
 
-            <div className="col-lg-6 text-lg-end mt-4 mt-lg-0">
-              <p className="gf-call-text">CALL OUR CALL CENTER</p>
-              <h4 className="gf-call-number">+1 (800) 634 97 25</h4>
+            {ggwIsAccountOpen && (
+                <div
+                    className="ggw-account-overlay"
+                    onClick={() => setGgwIsAccountOpen(false)}
+                ></div>
+            )}
+
+            <div className={`ggw-account-modal ${ggwIsAccountOpen ? "ggw-active" : ""}`}>
+
+                <div className="ggw-account-close">
+                    <i
+                        className="fas fa-times"
+                        onClick={() => setGgwIsAccountOpen(false)}
+                    ></i>
+                </div>
+
+                <div className="ggw-account-tabs d-flex justify-content-between">
+                    <span className="ggw-active-tab">
+                        Sign In <i className="fas fa-arrow-right"></i>
+                    </span>
+                    <span>
+                        <i className="far fa-user"></i> Register
+                    </span>
+                </div>
+
+                <div className="ggw-account-form">
+
+                    <div className="mb-3">
+                        <label>Username or email *</label>
+                        <input
+                            type="text"
+                            className="form-control ggw-input"
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label>Password *</label>
+                        <input
+                            type="password"
+                            className="form-control ggw-input"
+                        />
+                    </div>
+
+                    <div className="form-check mb-3">
+                        <input
+                            type="checkbox"
+                            className="form-check-input"
+                            id="remember"
+                        />
+                        <label className="form-check-label" htmlFor="remember">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <button className="ggw-login-btn w-100">
+                        Login
+                    </button>
+
+                    <p className="ggw-lost-password mt-3">
+                        Lost your password?
+                    </p>
+
+                </div>
             </div>
 
-          </div>
-        </div>
-      </section>
+            <section className="gf-register-section">
+                <div className="container gf-register-wrapper">
+                    <div className="row align-items-center">
 
-      {/* ================= FOOTER ================= */}
-      <footer className="gf-footer-section">
-        <div className="container">
-          <div className="row">
+                        <div className="col-lg-6">
+                            <h4 className="gf-register-title">
+                                Get a surprise discount by registering!
+                            </h4>
 
-            {/* About */}
-            <div className="col-lg-4 mb-4">
-              <h5 className="gf-footer-heading">About Company</h5>
-              <p className="gf-footer-text">
-                Pellentesque habitant morbi tristique senectus et netus et
-                malesuada fames ac turpis egestas. Vestibulum tortor quam,
-                feugiat vitae, ultricies eget, tempor sit amet, ante.
-              </p>
+                            <div className="gf-register-form d-flex">
+                                <input
+                                    type="email"
+                                    placeholder="Your E-mail"
+                                    className="form-control gf-input"
+                                />
+                                <button className="gf-submit-btn">Submit</button>
+                            </div>
+                        </div>
 
-              <div className="gf-social-icons">
-                <i className="fab fa-whatsapp"></i>
-                <i className="fab fa-facebook-f"></i>
-                <i className="fab fa-dribbble"></i>
-                <i className="fab fa-twitter"></i>
-                <i className="fab fa-behance"></i>
-              </div>
+                        <div className="col-lg-6 text-lg-end mt-4 mt-lg-0">
+                            <p className="gf-call-text">CALL OUR CALL CENTER</p>
+                            <h4 className="gf-call-number">+1 (800) 634 97 25</h4>
+                        </div>
 
-              <h6 className="gf-download-title">
-                Download APP for fast and secure shopping:
-              </h6>
+                    </div>
+                </div>
+            </section>
 
-              <div className="gf-app-images">
-                <img src={appstoreImg} alt="App Store" />
-                <img src={playstoreImg} alt="Google Play" />
-              </div>
-            </div>
+            <footer className="gf-footer-section">
+                <div className="container">
+                    <div className="row">
 
-            {/* Links */}
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="gf-footer-heading">Links</h6>
-              <ul className="gf-footer-list">
-                <li>GreenGrocery INC</li>
-                <li>About Us</li>
-                <li>Company</li>
-                <li>Careers</li>
-                <li>Brands</li>
-              </ul>
-            </div>
+                        <div className="col-lg-4 mb-4">
+                            <h5 className="gf-footer-heading">About Company</h5>
+                            <p className="gf-footer-text">
+                                Pellentesque habitant morbi tristique senectus et netus et
+                                malesuada fames ac turpis egestas. Vestibulum tortor quam,
+                                feugiat vitae, ultricies eget, tempor sit amet, ante.
+                            </p>
 
-            {/* Campaigns */}
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="gf-footer-heading">Campaigns</h6>
-              <ul className="gf-footer-list">
-                <li>Campaign of the Week</li>
-                <li>%50 Sales</li>
-                <li>Pre-Sale</li>
-                <li>Bakery</li>
-                <li>Outlet</li>
-              </ul>
-            </div>
+                            <div className="gf-social-icons">
+                                <i className="fab fa-whatsapp"></i>
+                                <i className="fab fa-facebook-f"></i>
+                                <i className="fab fa-dribbble"></i>
+                                <i className="fab fa-twitter"></i>
+                                <i className="fab fa-behance"></i>
+                            </div>
 
-            {/* Pages */}
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="gf-footer-heading">Pages</h6>
-              <ul className="gf-footer-list">
-                <li>Order Tracking</li>
-                <li>Terms & Conditions</li>
-                <li>Privacy Policy</li>
-                <li>Tutorials</li>
-                <li>FAQ</li>
-              </ul>
-            </div>
+                            <h6 className="gf-download-title">
+                                Download APP for fast and secure shopping:
+                            </h6>
 
-            {/* Help */}
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="gf-footer-heading">Help</h6>
-              <ul className="gf-footer-list">
-                <li><i className="fab fa-facebook-messenger me-2"></i>Facebook Chat</li>
-                <li><i className="fab fa-whatsapp me-2"></i>Whatsapp Help</li>
-                <li><i className="fas fa-envelope me-2"></i>E-mail Support</li>
-                <li><i className="fas fa-comment me-2"></i>Contact</li>
-              </ul>
-            </div>
+                            <div className="gf-app-images">
+                                <img src={appstoreImg} alt="App Store" />
+                                <img src={playstoreImg} alt="Google Play" />
+                            </div>
+                        </div>
 
-          </div>
+                        <div className="col-lg-2 col-md-4 mb-4">
+                            <h6 className="gf-footer-heading">Links</h6>
+                            <ul className="gf-footer-list">
+                                <li>GreenGrocery INC</li>
+                                <li>About Us</li>
+                                <li>Company</li>
+                                <li>Careers</li>
+                                <li>Brands</li>
+                            </ul>
+                        </div>
 
-          {/* Bottom */}
-          <div className="gf-footer-bottom d-flex justify-content-between align-items-center flex-wrap">
-            <div className="gf-policy-links">
-              PRIVACY POLICY | RETURNS POLICY | FAQ
-            </div>
+                        <div className="col-lg-2 col-md-4 mb-4">
+                            <h6 className="gf-footer-heading">Campaigns</h6>
+                            <ul className="gf-footer-list">
+                                <li>Campaign of the Week</li>
+                                <li>%50 Sales</li>
+                                <li>Pre-Sale</li>
+                                <li>Bakery</li>
+                                <li>Outlet</li>
+                            </ul>
+                        </div>
 
-            <div className="gf-bottom-icons">
-              <i className="fab fa-dribbble"></i>
-              <i className="fab fa-twitter"></i>
-              <i className="fab fa-behance"></i>
-            </div>
+                        <div className="col-lg-2 col-md-4 mb-4">
+                            <h6 className="gf-footer-heading">Pages</h6>
+                            <ul className="gf-footer-list">
+                                <li>Order Tracking</li>
+                                <li>Terms & Conditions</li>
+                                <li>Privacy Policy</li>
+                                <li>Tutorials</li>
+                                <li>FAQ</li>
+                            </ul>
+                        </div>
 
-            <div className="gf-payment-img">
-              <img src={paymentImg} alt="Payments" />
-            </div>
-          </div>
+                        <div className="col-lg-2 col-md-4 mb-4">
+                            <h6 className="gf-footer-heading">Help</h6>
+                            <ul className="gf-footer-list">
+                                <li><i className="fab fa-facebook-messenger me-2"></i>Facebook Chat</li>
+                                <li><i className="fab fa-whatsapp me-2"></i>Whatsapp Help</li>
+                                <li><i className="fas fa-envelope me-2"></i>E-mail Support</li>
+                                <li><i className="fas fa-comment me-2"></i>Contact</li>
+                            </ul>
+                        </div>
 
-        </div>
-      </footer>
+                    </div>
+
+                    <div className="gf-footer-bottom d-flex justify-content-between align-items-center flex-wrap">
+                        <div className="gf-policy-links">
+                            PRIVACY POLICY | RETURNS POLICY | FAQ
+                        </div>
+
+                        <div className="gf-bottom-icons">
+                            <i className="fab fa-dribbble"></i>
+                            <i className="fab fa-twitter"></i>
+                            <i className="fab fa-behance"></i>
+                        </div>
+
+                        <div className="gf-payment-img">
+                            <img src={paymentImg} alt="Payments" />
+                        </div>
+                    </div>
+
+                </div>
+            </footer>
 
         </>
     )
