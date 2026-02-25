@@ -315,3 +315,120 @@
     padding: 30px 15px;
   }
 }
+/* ============================= */
+/* PROMO SECTION RESPONSIVE FIX */
+/* ============================= */
+
+@media (max-width: 992px) {
+
+  .cp-main-content-area {
+    padding: 15px;
+  }
+
+  .cp-promo-card {
+    min-height: 200px;
+  }
+
+  .cp-promo-title {
+    font-size: 1.4rem;
+  }
+
+  .cp-promo-overlay {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .cp-promo-card {
+    min-height: 180px;
+  }
+
+  .cp-promo-title {
+    font-size: 1.2rem;
+  }
+
+  .cp-promo-btn {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+}
+/* ============================= */
+/* SIDEBAR BANNER FIX */
+/* ============================= */
+
+@media (max-width: 992px) {
+
+  .kg-promo-sidebar {
+    min-height: 250px;
+    margin-top: 20px;
+  }
+
+  .kg-sidebar-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .kg-promo-sidebar {
+    min-height: 200px;
+  }
+
+  .kg-sidebar-overlay {
+    padding: 15px;
+  }
+}
+/* ============================= */
+/* PRODUCT CARD MOBILE FIX */
+/* ============================= */
+
+@media (max-width: 576px) {
+
+  .kg-img-wrapper {
+    padding: 15px;
+  }
+
+  .kg-img-wrapper img {
+    max-height: 140px;
+  }
+
+  .kg-card-content {
+    padding: 15px;
+  }
+
+  .kg-title {
+    font-size: 14px;
+  }
+
+  .kg-hover-icons {
+    right: 10px;
+    top: 10px;
+  }
+}
+/* ============================= */
+/* INSTAGRAM MOBILE FIX */
+/* ============================= */
+
+@media (max-width: 576px) {
+
+  .igx-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .igx-nav {
+    justify-content: center;
+  }
+
+  .igx-slider {
+    gap: 12px;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}

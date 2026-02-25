@@ -1566,32 +1566,57 @@ TOPBAR .gg-topbar {
     flex-direction: column;
   }
 }
+/* ============================= */
+/* WISHLIST SIDEBAR FIX */
+/* ============================= */
 
+/* Overlay hidden by default */
 .ggw-wishlist-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  z-index: 999;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+  z-index: 9998;
 }
 
+/* Show only when active */
+.ggw-wishlist-overlay.ggw-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sidebar hidden by default */
 .ggw-wishlist-sidebar {
   position: fixed;
   top: 0;
-  right: -400px;
+  right: -420px;   /* hidden outside screen */
   width: 380px;
-  height: 100%;
+  height: 100vh;
   background: #fff;
-  z-index: 1000;
-  transition: 0.4s ease;
+  z-index: 9999;
+  transition: right 0.4s ease;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
+/* When clicked -> open */
 .ggw-wishlist-sidebar.ggw-active {
   right: 0;
+}
+
+/* Mobile full width */
+@media (max-width: 576px) {
+  .ggw-wishlist-sidebar {
+    width: 100%;
+    right: -100%;
+  }
+
+  .ggw-wishlist-sidebar.ggw-active {
+    right: 0;
+  }
 }
 
 .ggw-wishlist-header {
@@ -1880,4 +1905,132 @@ TOPBAR .gg-topbar {
     .kg-qv-main-img {
         max-height: 250px;
     }
+}
+/* ============================= */
+/* HEADER RESPONSIVE FIX */
+/* ============================= */
+
+@media (max-width: 992px) {
+
+  /* Hide topbar */
+  .gg-topbar {
+    display: none;
+  }
+
+  /* Stack header */
+  .gg-header .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Search full width */
+  .gg-search-box {
+    width: 100% !important;
+    margin: 15px 0;
+  }
+
+  /* Hide right info */
+  .gg-right-info {
+    display: none !important;
+  }
+
+  /* Icons center */
+  .gg-icons {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Navbar fix */
+  .gg-navbar {
+    padding: 10px 0;
+  }
+
+  .gg-navbar .navbar-collapse {
+    background: #6f42c1;
+    padding: 15px;
+  }
+
+  .gg-navbar .nav-link {
+    padding: 10px 0;
+  }
+}
+.compare-overlay {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.compare-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.compare-sidebar {
+  right: -400px;
+}
+
+.compare-sidebar.open {
+  right: 0;
+}
+
+@media (max-width: 576px) {
+  .compare-sidebar {
+    width: 100%;
+    right: -100%;
+  }
+}
+body {
+  overflow-x: hidden;
+}
+/* ============================= */
+/* CART SIDEBAR FIX */
+/* ============================= */
+
+/* Overlay hidden by default */
+.kg-cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+  z-index: 9998;
+}
+
+/* Show only when active */
+.kg-cart-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sidebar hidden outside screen */
+.kg-cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -420px;   /* Hidden */
+  width: 380px;
+  height: 100vh;
+  background: #fff;
+  z-index: 9999;
+  transition: right 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Open when class added */
+.kg-cart-sidebar.open {
+  right: 0;
+}
+
+/* Mobile full width */
+@media (max-width: 576px) {
+  .kg-cart-sidebar {
+    width: 100%;
+    right: -100%;
+  }
+
+  .kg-cart-sidebar.open {
+    right: 0;
+  }
 }
